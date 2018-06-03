@@ -88,17 +88,18 @@ def message(request):
         result = reservation(reserve_data)
         # 정상 0, 비정상종료는 1, 예약한 곳이 있으면 5 리턴
 
-        if result == 0:
+        if result["code"] == 0:
             return JsonResponse({
                 "message": {
-                    "text": "{} 예약되었습니다".format(content_name)
+                    "text": "{} 예약되었습니다\n비밀번호 : {}"
+                        .format(content_name, result["password"])
                 },
                 "keyboard": {
                     "type": "buttons",
                     "buttons": menus
                 }
             })
-        elif result == 1:
+        elif result["code"] == 1:
             return JsonResponse({
                 "message": {
                     "text": "예약중 오류가 발생했습니다\n개발자에게 말씀해주세요"
@@ -108,7 +109,7 @@ def message(request):
                     "buttons": menus
                 }
             })
-        elif result == 5:
+        elif result["code"] == 5:
             return JsonResponse({
                 "message": {
                     "text": "이미 예약한 스터디룸이 있습니다\n취소후 예약해주세요"

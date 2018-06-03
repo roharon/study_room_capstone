@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import datetime
+import random
 """
 #make_reservation_db : DB폴더없을때 생성해줌
 #reservation : room DB연결하여 예약생성
@@ -19,19 +20,20 @@ def make_reservation_db():
     reservation_text는 사용자 예약당시의 시간이다.
 
     """
-    path = "./DB"
+    path = "../DB"
     os.makedirs(path, exist_ok=True)
-    os.remove("./DB/room")
-    con = sqlite3.connect('./DB/room')
+    os.remove("../DB/room")
+    con = sqlite3.connect('../DB/room')
 
     cur = con.cursor()
 
     for i in range(1, 6):
-        cur.execute("CREATE TABLE ROOM" + str(i) + "(start_time text, end_time text, student text, reservation_time text)")
+        cur.execute("CREATE TABLE ROOM" + str(i) + "(start_time text, end_time text, student text, reservation_time text, password text)")
 
         for j in range(930, 2130, 300):
-            cur.execute("INSERT INTO ROOM" + str(i) + " Values(:start_time, :end_time, :student, :reservation_time);",
-                        {"start_time": j, "end_time": j + 300, "student": '', "reservation_time": ''})
+            randpassword = random.randrange(1000,10000)
+            cur.execute("INSERT INTO ROOM" + str(i) + " Values(:start_time, :end_time, :student, :reservation_time, :password);",
+                        {"start_time": j, "end_time": j + 300, "student": '', "reservation_time": '', "password": str(randpassword)})
 
     con.commit()
     con.close()
@@ -54,7 +56,7 @@ def reservation(request = None):
     # 안비어으면 예약안되게 한다.
     if select != []:
         con.close()
-        return 5
+        return {"code": 5}
 
     now_room = cur.execute("SELECT reservation_time FROM ROOM{0} WHERE start_time = {1};"
                 .format(str(request['NO']), str(request['start_time'])))
@@ -69,12 +71,16 @@ def reservation(request = None):
     else:
         print(now_room)
         con.close()
-        return 1
+        return {"code": 1}
 
+    room_password = cur.execute("SELECT password FROM ROOM{} WHERE start_time = {};"
+                                .format(str(request['NO']), str(request['start_time'])))
+    room_password = room_password.fetchall()
     con.commit()
     con.close()
-
-    return 0
+    print(room_password[0][0])
+    return {"code":0, "password": room_password[0][0]}
+    # code 정상종료 확인코드, password 스터디룸 비밀번호
 
 
 def search_reservation(request = None):
@@ -145,8 +151,10 @@ def cancel_reservation(request = None):
     return "{}번실 {} 시간대 예약 취소되었습니다".format(prev_cancel[0][0][4:], prev_cancel[0][1])
 
 if __name__ == "__main__":
-    # make_reservation_db()
+    make_reservation_db()
     #search_reservation()
+
+    """
     my_reservation({'student': 'roharon'})
     print("===============")
     reservation({
@@ -155,3 +163,4 @@ if __name__ == "__main__":
         'reservation_time': '0110',
         'start_time': '930',
     })
+    """
