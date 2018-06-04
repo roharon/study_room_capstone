@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import include
 from study_room import views
+from .db_func import rasp_password
 
 urlpatterns = [
     url(r'keyboard', views.keyboard),
     url(r'message', views.message),
+    url(r'password', rasp_password),
 ]

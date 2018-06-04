@@ -42,7 +42,7 @@ def message(request):
 
     if content_name == '나의 예약현황':
         reservation_MyStatus = my_reservation({"student": user_name})
-        # 리턴형식 : [방번호, 사용할 시간, 예약당시 시간]
+        # 리턴형식 : [방번호, 사용할 시간, 예약당시 시간, 패스워드]
         text = "사용자의 예약현황\n"
         for cell in reservation_MyStatus:
             if len(cell[1]) == 3:
@@ -50,7 +50,7 @@ def message(request):
             else:
                 time = "{}시 {}분".format(cell[1][:2], cell[1][2:])
 
-            text += "{} - {}".format(cell[0], time)
+            text += "{} - {}\n비밀번호 : {}\n".format(cell[0], time, cell[3])
 
         return JsonResponse({
             "message": {
@@ -77,6 +77,7 @@ def message(request):
 
     elif '번실 - ' in content_name and len(content_name) < 20:
         time_sen = str(content_name[6:])
+
         time_sen = time_sen.replace('시', '').replace('분','').replace(' ','')
         reserve_data = {
             "NO": content_name[:1],
@@ -112,7 +113,7 @@ def message(request):
         elif result["code"] == 5:
             return JsonResponse({
                 "message": {
-                    "text": "이미 예약한 스터디룸이 있습니다\n취소후 예약해주세요"
+                    "text": "이미 3시간을 모두 소진하였습니다\n취소후 다시 예약해주세요"
                 },
                 "keyboard": {
                     "type": "buttons",
@@ -124,25 +125,29 @@ def message(request):
         available_list = search_reservation()
         room_no = content_name[:1]
         can_select = []
+        print(available_list)
         for can_time in available_list['ROOM' + room_no]:
-            if len(can_time) == 3:
-                can_time = "{}시 {}분".format(can_time[:2], can_time[2:])
-            else:
-                can_time = "{}시 {}분".format(can_time[:2], can_time[2:])
+            can_time = "{}시 {}분".format(can_time[:2], can_time[2:])
 
-                # can_select는 가능한 호실들 response하기위한 목록
-                # can_time은 available_list 해당호실의 예약가능한 시간들
+            # can_select는 가능한 호실들 response하기위한 목록
+            # can_time은 available_list 해당호실의 예약가능한 시간들
 
-                can_select.append("{} - {}".format(content_name, can_time))
+            can_select.append("{} - {}".format(content_name, can_time))
                 # '2번실 - 9시 30분'
                 # 분류는 '번실 - ' 로 하면된다.
         #print(can_select)
         #print('\n\n')
         print(content_name, menus)
 
+        mes_text = "예약 화면"
+
+        if can_select == []:
+            mes_text = "빈 방이 없습니다"
+            can_select = ['예약하기', '예약취소', '나의 예약현황']
+
         return JsonResponse({
             "message": {
-                "text": "예약"
+                "text": mes_text
             },
             "keyboard": {
                 "type": "buttons",

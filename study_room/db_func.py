@@ -2,6 +2,10 @@ import sqlite3
 import os
 import datetime
 import random
+import requests
+import json
+from django.http import JsonResponse
+
 """
 #make_reservation_db : DB폴더없을때 생성해줌
 #reservation : room DB연결하여 예약생성
@@ -30,10 +34,11 @@ def make_reservation_db():
     for i in range(1, 6):
         cur.execute("CREATE TABLE ROOM" + str(i) + "(start_time text, end_time text, student text, reservation_time text, password text)")
 
-        for j in range(930, 2130, 300):
+        time_res = 100
+        for j in range(0, 2400, time_res):
             randpassword = random.randrange(1000,10000)
             cur.execute("INSERT INTO ROOM" + str(i) + " Values(:start_time, :end_time, :student, :reservation_time, :password);",
-                        {"start_time": j, "end_time": j + 300, "student": '', "reservation_time": '', "password": str(randpassword)})
+                        {"start_time": j, "end_time": j + time_res, "student": '', "reservation_time": '', "password": str(randpassword)})
 
     con.commit()
     con.close()
@@ -52,9 +57,11 @@ def reservation(request = None):
         for i in user_select_room.fetchall():
             select.append(i)
     print(select)
-    # 유저가 기존에 예약한 스터디룸이 있는가?
+
     # 안비어으면 예약안되게 한다.
-    if select != []:
+    # 예약한 스터디룸이 3   개를 넘어선다 ==> 예약 더이상 안되게 한다.
+    if len(select) > 2:
+        print(select)
         con.close()
         return {"code": 5}
 
@@ -106,8 +113,6 @@ def search_reservation(request = None):
 
     con.close()
     # print(available_list)
-    return available_list
-
 
     return available_list
 
@@ -121,14 +126,14 @@ def my_reservation(request = None):
     cur = con.cursor()
 
     for i in range(1,6):
-        cur.execute("SELECT start_time, reservation_time FROM ROOM{} WHERE student = {!r};"
+        cur.execute("SELECT start_time, reservation_time, password FROM ROOM{} WHERE student = {!r};"
                     .format(str(i), request['student']))
         for j in cur.fetchall():
-            reservation_list.append(['ROOM{}'.format(i), j[0], j[1]])
+            reservation_list.append(['ROOM{}'.format(i), j[0], j[1], j[2]])
     print(reservation_list)
 
     return reservation_list
-    # [['ROOM1', '930', '110']]
+    # [['ROOM1', '930', '110', PASSWORD]]
 
 def cancel_reservation(request = None):
     # 리턴 1은 비정상적 종료,
@@ -139,8 +144,9 @@ def cancel_reservation(request = None):
     prev_cancel = my_reservation({"student": request['student']})
 
     try:
-        cur.execute("UPDATE ROOM{} SET student = '', reservation_time = '' WHERE start_time = {};"
-                    .format(prev_cancel[0][0][4:], prev_cancel[0][1]))
+        for i in range(len(prev_cancel)):
+            cur.execute("UPDATE ROOM{} SET student = '', reservation_time = '' WHERE start_time = {};"
+                    .format(prev_cancel[i][0][4:], prev_cancel[i][1]))
 
     except Exception as e:
         con.close()
@@ -148,7 +154,34 @@ def cancel_reservation(request = None):
         return "취소할 곳이 없습니다"
     con.commit()
     con.close()
-    return "{}번실 {} 시간대 예약 취소되었습니다".format(prev_cancel[0][0][4:], prev_cancel[0][1])
+
+    text = ""
+    for i in range(len(prev_cancel)):
+        text += "{}번실 {} 시간대 예약 취소되었습니다\n"\
+            .format(prev_cancel[i][0][4:], prev_cancel[i][1])
+    return text
+
+def rasp_password(request):
+    # {'room': 방번호, 'start_time': 시작시간
+    # {'room': 1, 'start_time': 200}
+    # 1번실 오전2시
+
+    json_res = {'room': 2, 'start_time': 1300}
+    con = sqlite3.connect("./DB/room")
+    cur = con.cursor()
+
+    #json_reqeust = (request.body).decode('utf-8')
+    #json_res = json.loads(json_reqeust)
+
+    cur.execute("SELECT password FROM ROOM{} WHERE start_time = {}"
+                .format(str(json_res['room']), str(json_res['start_time'])))
+
+    password = cur.fetchall()
+
+    return JsonResponse({
+        'password': password[0]
+    })
+
 
 if __name__ == "__main__":
     make_reservation_db()
