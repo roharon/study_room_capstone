@@ -157,8 +157,17 @@ def cancel_reservation(request = None):
 
     text = ""
     for i in range(len(prev_cancel)):
-        text += "{}번실 {} 시간대 예약 취소되었습니다\n"\
-            .format(prev_cancel[i][0][4:], prev_cancel[i][1])
+        time = prev_cancel[i][1]
+
+        if len(time) == 1:
+            time = "{}시 00분".format(time)
+        elif len(time) == 3:
+            time = "{}시 {}분".format(time[:1], time[1:])
+        elif len(time) == 4:
+            time = "{}시 {}분".format(time[:2], time[2:])
+
+        text += "{}번실 {} 예약 취소되었습니다\n"\
+            .format(prev_cancel[i][0][4:], time)
     return text
 
 def rasp_password(request):

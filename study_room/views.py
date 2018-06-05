@@ -127,17 +127,22 @@ def message(request):
         can_select = []
         print(available_list)
         for can_time in available_list['ROOM' + room_no]:
-            can_time = "{}시 {}분".format(can_time[:2], can_time[2:])
+            print(can_time)
+            if len(can_time) == 1:
+                can_time = "{}시 {}분".format(can_time[0:1], "00")
+            elif len(can_time) == 3:
+                can_time = "{}시 {}분".format(can_time[0:1], can_time[1:])
+            elif len(can_time) == 4:
+                can_time = "{}시 {}분".format(can_time[0:2], can_time[2:])
 
             # can_select는 가능한 호실들 response하기위한 목록
             # can_time은 available_list 해당호실의 예약가능한 시간들
-
             can_select.append("{} - {}".format(content_name, can_time))
                 # '2번실 - 9시 30분'
                 # 분류는 '번실 - ' 로 하면된다.
         #print(can_select)
         #print('\n\n')
-        print(content_name, menus)
+        print(can_select)
 
         mes_text = "예약 화면"
 
