@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fc146e7b-16ae-47f5-aba1-d88ac6b8f587" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_rasp.py" beforeDir="false" afterPath="$PROJECT_DIR$/auto_rasp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/req.py" beforeDir="false" afterPath="$PROJECT_DIR$/req.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/study_room/app_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/study_room/app_urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/study_room/db_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/study_room/db_func.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,6 +15,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/study_room_capstone$db_func.coverage" NAME="db_func Coverage Results" MODIFIED="1528116932019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/study_room" />
+    <SUITE FILE_PATH="coverage/study_room_capstone$auto_rasp.coverage" NAME="auto_rasp Coverage Results" MODIFIED="1528278813482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_room_capstone$data_practice.coverage" NAME="data_practice Coverage Results" MODIFIED="1527585966093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_room_capstone$req.coverage" NAME="req Coverage Results" MODIFIED="1528278294294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_room_capstone$study_room_capstone.coverage" NAME="study_room_capstone Coverage Results" MODIFIED="1527462621838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
@@ -50,18 +50,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="req.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/req.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="apps.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/study_room/apps.py">
           <provider selected="true" editor-type-id="text-editor" />
@@ -76,11 +64,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="auto_rasp.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="req.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/req.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="138">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="auto_rasp.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/auto_rasp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
+            <state relative-caret-position="394">
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+              <folding>
+                <element signature="e#1#16#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,10 +117,10 @@
         <option value="$PROJECT_DIR$/study_room_capstone/settings.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/study_room/views.py" />
-        <option value="$PROJECT_DIR$/auto_rasp.py" />
         <option value="$PROJECT_DIR$/study_room/app_urls.py" />
         <option value="$PROJECT_DIR$/study_room/db_func.py" />
         <option value="$PROJECT_DIR$/req.py" />
+        <option value="$PROJECT_DIR$/auto_rasp.py" />
       </list>
     </option>
   </component>
@@ -193,7 +196,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.req">
+  <component name="RunManager" selected="Python.auto_rasp">
     <configuration name="a" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="study_room_capstone" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -208,6 +211,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/a.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="auto_rasp" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="study_room_capstone" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/auto_rasp.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -317,9 +339,11 @@
       <item itemvalue="Python.a" />
       <item itemvalue="Python.data_practice" />
       <item itemvalue="Python.req" />
+      <item itemvalue="Python.auto_rasp" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.auto_rasp" />
         <item itemvalue="Python.req" />
         <item itemvalue="Python.db_func" />
         <item itemvalue="Python.data_practice" />
@@ -358,9 +382,9 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34826428" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34826428" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32943678" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.65292096" visible="true" weight="0.1380597" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.65292096" visible="true" weight="0.1380597" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" weight="0.32943678" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="SciView" order="3" weight="0.3296875" />
@@ -413,13 +437,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/study_room/app_urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="12" column="20" lean-forward="true" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3864">
@@ -723,20 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auto_rasp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/study_room/app_urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="19" column="34" lean-forward="true" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/study_room/db_func.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -747,12 +750,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/study_room/app_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="19" column="34" lean-forward="true" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/password.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/req.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="138">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auto_rasp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
           </folding>
         </state>
       </provider>

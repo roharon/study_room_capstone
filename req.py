@@ -2,6 +2,11 @@ import requests
 import json
 import datetime
 
+"""
+requests이용한 사용자요청마다 비번받을 경우의 스크립트
+
+"""
+
 def password():
     now_time = datetime.datetime.now()
 
