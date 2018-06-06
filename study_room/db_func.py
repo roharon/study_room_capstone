@@ -175,24 +175,68 @@ def rasp_password(request):
     # {'room': 1, 'start_time': 200}
     # 1번실 오전2시
 
-    json_res = {'room': 2, 'start_time': 1300}
+    #print(request.body)
     con = sqlite3.connect("./DB/room")
     cur = con.cursor()
 
-    #json_reqeust = (request.body).decode('utf-8')
-    #json_res = json.loads(json_reqeust)
+    json_reqeust = (request.body).decode('utf-8')
+    json_res = json.loads(str(json_reqeust))
+    print(json_res)
+    #json_res = {'room': 3, 'start_time': 1300}
 
     cur.execute("SELECT password FROM ROOM{} WHERE start_time = {}"
                 .format(str(json_res['room']), str(json_res['start_time'])))
 
     password = cur.fetchall()
-
+    print(password)
     return JsonResponse({
-        'password': password[0]
+        'password': (password[0])
     })
 
 
+def all_rasp_password(request):
+    """
+
+    :param request: request = {"room": 2}
+    :return:
+    """
+
+    json_request = (request.body).decode('utf-8')
+    json_res = json.loads(json_request)
+
+    #json_res = {'room': 3}
+
+    all_password_dict = {}
+    try:
+        con = sqlite3.connect("./DB/room")
+        cur = con.cursor()
+
+        cur.execute("SELECT password, start_time FROM ROOM{}"
+                    .format(str(json_res['room'])))
+
+        all_password = cur.fetchall()
+        #print(all_password)
+
+    except Exception as e:
+        print("ERROR all_rasp_password execute")
+        print(e)
+        pass
+    for pw, st in all_password:
+        all_password_dict[str(st)] = pw
+
+    #print(all_password_dict)
+
+    return JsonResponse(all_password_dict)
+
+
+
 if __name__ == "__main__":
+
+    """
+    cron
+    
+    0 6 * * * /~~~/study_room/db_func.py
+    """
     make_reservation_db()
     #search_reservation()
 
