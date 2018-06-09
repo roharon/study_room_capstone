@@ -120,13 +120,27 @@ def message(request):
                     "buttons": menus
                 }
             })
+        elif result["code"] == 7:
+            return JsonResponse({
+                "message": {
+                    "text": "이미 지난 시간입니다."
+                },
+                "keyboard": {
+                    "type": "buttons",
+                    "buttons": menus
+                }
+            })
 
     elif '번실' in content_name and len(content_name) < 20:
         available_list = search_reservation()
         room_no = content_name[:1]
         can_select = []
         print(available_list)
+        time = datetime.datetime.now().strftime("%H%M")
         for can_time in available_list['ROOM' + room_no]:
+            if int(can_time) < int(time):
+                continue
+                #시간지나면 예약화면 안뜨게
             print(can_time)
             if len(can_time) == 1:
                 can_time = "{}시 {}분".format(can_time[0:1], "00")

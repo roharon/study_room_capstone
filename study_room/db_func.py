@@ -47,6 +47,7 @@ def make_reservation_db():
 def reservation(request = None):
     # NO reservation_time student start_time
     # 정상이면 0 리턴, 비정상 종료면 1리턴, 기존예약이 있으면 5 리턴
+    # 시간지났으면 7리턴
     con = sqlite3.connect('./DB/room')
     cur = con.cursor()
     select = []
@@ -58,6 +59,9 @@ def reservation(request = None):
             select.append(i)
     print(select)
 
+    time = datetime.datetime.now().strftime("%H%M")
+    if int(request['start_time']) < int(time):
+        return {"code": 7}
     # 안비어으면 예약안되게 한다.
     # 예약한 스터디룸이 3   개를 넘어선다 ==> 예약 더이상 안되게 한다.
     if len(select) > 2:
@@ -121,15 +125,18 @@ def my_reservation(request = None):
     # 나의 예약현황
     reservation_list = []
     #reservation_list 에 [방번호, 사용할 시간, 예약당시 시간]
-
     con = sqlite3.connect("./DB/room")
     cur = con.cursor()
 
     for i in range(1,6):
-        cur.execute("SELECT start_time, reservation_time, password FROM ROOM{} WHERE student = {!r};"
+        cur.execute("SELECT start_time, reservation_time, password, end_time FROM ROOM{} WHERE student = {!r};"
                     .format(str(i), request['student']))
         for j in cur.fetchall():
-            reservation_list.append(['ROOM{}'.format(i), j[0], j[1], j[2]])
+            time = datetime.datetime.now().strftime("%H%M")
+            if int(j[3]) > int(time):
+                reservation_list.append(['ROOM{}'.format(i), j[0], j[1], j[2]])
+            else:
+                pass
     print(reservation_list)
 
     return reservation_list
@@ -142,7 +149,9 @@ def cancel_reservation(request = None):
     cur = con.cursor()
 
     prev_cancel = my_reservation({"student": request['student']})
-
+    print("예약 ㅣ : ",prev_cancel)
+    if prev_cancel == []:
+        return "취소할 곳이 없습니다"
     try:
         for i in range(len(prev_cancel)):
             cur.execute("UPDATE ROOM{} SET student = '', reservation_time = '' WHERE start_time = {};"
