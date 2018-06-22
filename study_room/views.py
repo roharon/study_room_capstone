@@ -3,6 +3,10 @@ from .db_func import reservation
 from .db_func import search_reservation
 from .db_func import cancel_reservation
 from .db_func import my_reservation
+from . import library_crawl
+
+import urllib.request
+from bs4 import BeautifulSoup
 import json
 import os
 import sqlite3
@@ -22,7 +26,7 @@ def keyboard(request):
 
 @csrf_exempt
 def message(request):
-    menus = ['예약하기', '예약취소', '나의 예약현황']
+    menus = ['예약하기', '예약취소', '나의 예약현황', '도서관']
     study_room_menu = ['1번실', '2번실', '3번실', '4번실', '5번실', '6번실']
 
     req = (request.body).decode('utf-8')
@@ -207,6 +211,103 @@ def message(request):
                 "buttons": ['예', '아니오']
             }
         })
+
+    elif content_name == '도서관':
+        try:
+            req = urllib.request.urlopen('http://203.232.237.8/domian5/2/domian5.asp')
+        except:
+            pass
+
+        soup = BeautifulSoup(req, 'lxml', from_encoding="utf-8")
+
+        my_titles = soup.select(
+            'tr'
+        )
+        data = []
+        for title in my_titles:
+            data.append(title.text)
+
+        # data[3]은 3층 1열람실 내용
+        # [3~7]까지의 (6)
+
+        if content_name == "도서관":
+            lib_data =  {'3-1': data[3].split()[6], '3-2': data[4].split()[6], '4-3A': data[5].split()[6],
+                    '4-3B': data[6].split()[6]}
+        else:
+            # #print(data[name+2].split())
+            lib_data  = {'%': data[name + 2].split()[6], '이용자': data[name + 2].split()[4],
+                    '남은 좌석': data[name + 2].split()[5]}
+
+        if lib_data == 555:
+            return JsonResponse({
+                'message': {
+                    'text': "도서관 좌석을 불러 올 수 없습니다.\n다시 이용해주세요",
+                },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': button_info
+                }
+            })
+
+        buttons = ['3층 1열람실: ' + str(lib_data['3-1']) + '%',
+                   '3층 2열람실: ' + str(lib_data['3-2']) + '%',
+                   '4층 3열람실A: ' + str(lib_data['4-3A']) + '%',
+                   '4층 3열람실B: ' + str(lib_data['4-3B']) + '%'
+                   ]
+
+        return JsonResponse({
+            'message': {
+                'text': '열람실을 선택하세요'
+            },
+            'keyboard': {
+                'type': 'buttons',
+                'buttons': buttons
+            }
+        })
+
+
+    elif '열람실' in content_name:
+
+        if '3층 1열람실: ' in content_name:
+
+            name = "3층 1열람실 현황: "
+            lib_num = 1
+            room_no = 8
+
+        elif '3층 2열람실: ' in content_name:
+
+            name = "3층 2열람실 현황: "
+            lib_num = 2
+            room_no = 9
+
+        elif '4층 3열람실A: ' in content_name:
+
+            name = "4층 3열람실A 현황: "
+            lib_num = 3
+            room_no = 10
+
+        elif '4층 3열람실B: ' in content_name:
+
+            name = "4층 3열람실B 현황: "
+            lib_num = 4
+            room_no = 11
+
+        lib_data = library_crawl.glo_library(lib_num)
+
+        return JsonResponse({
+            'message': {
+                'text': name + str(lib_data['%']) + '%' + '\n이용자 수: ' + str(lib_data['이용자']) +
+                        '명\n남은 좌석 수: ' + str(lib_data['남은 좌석']),
+                'message_button': {
+                       'label': '좌석보기',
+                       'url': 'http://203.232.237.8/domian5/roomview5.asp?room_no=' + str(room_no)
+                }
+            },
+            'keyboard': {
+                'type': 'buttons',
+                'buttons': menus
+            }
+           })
 
     else:
         return JsonResponse({
