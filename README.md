@@ -1,1 +1,1 @@
-# study_room_capstone
+# study_room_reservation service
